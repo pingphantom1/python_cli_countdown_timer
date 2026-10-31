@@ -84,7 +84,7 @@ def countdown_time(hour=0, minute=0, second=0):
             else:
                 time.sleep(0.5)
 
-        print("\nTime's up!")
+        print("\nYour timer has finished!")
 
     finally:
         # Restore the terminal to it's original state
