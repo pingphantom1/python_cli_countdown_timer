@@ -18,26 +18,22 @@ def get_duration_before_countdown():
             mm = int(raw_countdown_duration[2:4])
             ss = int(raw_countdown_duration[4:6])
 
-            if hh > 23:
-                print("The hour (HH) cannot be greater than 23")
-            if mm > 60 or ss > 60:
-                print("The minute (mm) or the seconds (ss) can't be greater than 60")
-
         except ValueError:
             print('invalid input')
 
+        if hh > 23:
+            print("The hour (HH) cannot be greater than 23")
+            continue
+        if mm > 60 or ss > 60:
+            print("The minute (mm) or the seconds (ss) can't be greater than 60")
+            continue
+        
         break
 
     return hh, mm, ss
 
 hour, minute, second = get_duration_before_countdown()
 
-# print(hour)
-# print(minute)
-# print(second)
-
-# current_formatted_time = time.strftime('%H:%M:%S', time.localtime())
-# print(current_formatted_time)
 
 def countdown_time(hour=0, minute=0, second=0):
     paused = False
