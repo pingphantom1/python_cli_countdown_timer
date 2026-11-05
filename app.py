@@ -3,6 +3,7 @@ import sys
 import tty
 import termios
 import select
+import pygame
 
 
 def get_duration_before_countdown():
@@ -81,6 +82,15 @@ def countdown_time(hour=0, minute=0, second=0):
                 time.sleep(0.5)
 
         print("\nCountdown complete!")
+
+        # Play sound when countdown is complete
+        pygame.mixer.init()
+        sound = pygame.mixer.Sound('./sounds/alarm_sound_1.wav')
+        sound.play()
+
+        # Keep app running when sound is being played
+        while pygame.mixer.get_busy():
+            pygame.time.delay(100)
 
     finally:
         # Restore the terminal to it's original state
