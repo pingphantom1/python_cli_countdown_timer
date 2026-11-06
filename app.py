@@ -1,8 +1,12 @@
+import os
 import time
 import sys
 import tty
 import termios
 import select
+from pathlib import Path
+# Hide Pygame's version and welcome message
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "1"
 import pygame
 
 
@@ -83,14 +87,28 @@ def countdown_time(hour=0, minute=0, second=0):
 
         print("\nCountdown complete!")
 
-        # Play sound when countdown is complete
-        pygame.mixer.init()
-        sound = pygame.mixer.Sound('./sounds/alarm_sound_1.wav')
-        sound.play()
+        # Dynamic Path to sound to be played
+        sound_path = Path(__file__).resolve().parent / "sounds" / "alarm_sound_1.wav"
 
-        # Keep app running when sound is being played
-        while pygame.mixer.get_busy():
-            pygame.time.delay(100)
+        # Play sound when countdown is complete
+        try:
+            # Initialize the audio mixer if not already initialized
+            if not pygame.mixer.get_init():
+                pygame.mixer.init()
+            # Load alarm sound from the file
+            sound = pygame.mixer.Sound(str(sound_path))
+            # Play sound and save it's channel
+            channel = sound.play()
+
+            # Keep app running when sound is being played
+            # Wait until this specific alarm sound has finished playing.
+            # The short delay avoids checking continuously and using excess CPU.
+            if channel is not None:
+                while channel.get_busy():
+                    pygame.time.delay(100)
+
+        except (pygame.error, OSError) as err:
+            print(f"Could not play the alarm: {err}")
 
     finally:
         # Restore the terminal to it's original state
