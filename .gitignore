@@ -33,3 +33,6 @@ Thumbs.db
 
 # Environment variables / secrets (good practice to ignore local configs)
 .env
+
+#notification sounds
+sounds/
